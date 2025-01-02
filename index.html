@@ -184,7 +184,8 @@
                                     onChange={(e) => setNewNote(e.target.value)}
                                     onKeyPress={(e) => e.key === 'Enter' && saveNote()}
                                     placeholder="Write something based that happened..."
-                                    className="flex-1 p-3 rounded-lg bg-white/10 border border-white/20 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-white/30"
+                                    className="flex-1 p-3 rounded-lg bg-white/10 border border-white/20 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-white/30 caret-white"
+                                    style={{color: 'white'}}
                                 />
                                 <button 
                                     onClick={saveNote}
