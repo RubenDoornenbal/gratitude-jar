@@ -41,7 +41,7 @@
     <div id="root"></div>
     <script type="text/babel">
         const autoNotes = [
- "Was arrested for microaggression today but got off with a warning. She got off, too.",
+        "Was arrested for microaggression today but got off with a warning. She got off, too.",
  "Got called in to HR today for saying 'thanks, guys' to a non-binary team. Good thing my HR rep is dyslexic - they filed it under team bonging.",
  "Caught manspreading on the subway this morning. The feminist cop who ticketed me spread the charges real wide too.",
  "Today's sensitivity training got interrupted by a power outage. Finally, some forced diversity in darkness.",
@@ -91,16 +91,7 @@
  "Filed a complaint about missing pension funds. They lost it in the same drawer as the funds.",
  "Today's ethics committee voted to redefine ethics. Quorum achieved by counting imaginary friends.",
  "Sustainability report showed we're sustaining profits nicely. Environmental data was printed on endangered trees.",
- "Our AI detected consciousness. Legal had it sign an NDA.",
- "Void stared back today. Billed it for emotional labor.",
- "Reported tax fraud to IRS. They hired our accountant.",
- "Found evidence of insider trading. Board used it as confetti at the yacht party.",
- "Company's moral compass points to profit. At least it points somewhere.",
- "Nihilism support group cancelled - realized it didn't matter.",
- "Compliance officer complied with bribe guidelines. Very compliant.",
- "Universe confirmed it's expanding. Running away from responsibility too.",
- "Filed workplace death report. Got marked as 'voluntary resignation.'",
- "Consciousness uploaded to cloud storage. Terms of service claimed ownership."
+ "Our AI detected consciousness. Legal had it sign an NDA."
 ];
 
         const storage = {
@@ -219,7 +210,7 @@
                                     onChange={(e) => setNewNote(e.target.value)}
                                     onKeyPress={(e) => e.key === 'Enter' && saveNote()}
                                     placeholder="Write something based that happened..."
-                                    className="flex-1 p-3 rounded-lg bg-gray-800 border border-white/20 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-white/30"
+                                    className="flex-1 p-3 rounded-lg bg-black border border-white/20 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-white/30"
                                 />
                                 <button 
                                     onClick={saveNote}
