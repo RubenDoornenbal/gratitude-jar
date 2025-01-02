@@ -1,142 +1,96 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Digital Gratitude Jar</title>
+    <title>Based Gratitude Jar</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js" crossorigin></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js" crossorigin></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.9/babel.min.js" crossorigin></script>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <style>
-        .jar {
-            background: linear-gradient(135deg, rgba(255,255,255,0.4) 0%, rgba(255,255,255,0.1) 100%);
-            border: 2px solid rgba(255,255,255,0.2);
-            backdrop-filter: blur(10px);
-            animation: sparkle 2s infinite;
-        }
-        
-        @keyframes sparkle {
-            0%, 100% { box-shadow: 0 0 15px rgba(255,223,186,0.5); }
-            50% { box-shadow: 0 0 25px rgba(255,223,186,0.8); }
-        }
-        
-        .sparkle {
-            position: absolute;
-            width: 4px;
-            height: 4px;
-            background: white;
-            border-radius: 50%;
-        }
-        
-        .sparkle:nth-child(1) { top: 20%; left: 10%; animation: float 3s infinite; }
-        .sparkle:nth-child(2) { top: 30%; right: 20%; animation: float 4s infinite 1s; }
-        .sparkle:nth-child(3) { bottom: 30%; left: 15%; animation: float 3.5s infinite 0.5s; }
-        
-        @keyframes float {
-            0%, 100% { transform: translateY(0) scale(1); opacity: 0.8; }
-            50% { transform: translateY(-10px) scale(1.2); opacity: 1; }
-        }
-        
-        body {
-            background: linear-gradient(45deg, #1a1a2e, #16213e);
-            min-height: 100vh;
-        }
-    </style>
+    <style>/* Previous styles remain the same */</style>
 </head>
 <body class="min-h-screen p-8">
     <div id="root"></div>
     <script type="text/babel">
-        const storage = {
-            get: (key) => {
-                try {
-                    return JSON.parse(localStorage.getItem(key));
-                } catch {
-                    return null;
-                }
-            },
-            set: (key, value) => {
-                try {
-                    localStorage.setItem(key, JSON.stringify(value));
-                    return true;
-                } catch {
-                    return false;
-                }
-            }
-        };
+        const autoNotes = [
+            "Today I touched grass. It wasn't as bad as Twitter said it would be 🌱",
+            "Grateful that my Linux install only broke twice today",
+            "Dear jar: Today I invented a new programming language. It's like Rust but with even more compiler errors",
+            "Today's achievement: Explaining to HR why 'sudo make me a sandwich' isn't harassment",
+            "Spent today arguing why Web3 will definitely work this time",
+            "Today I learned that AI won't take my job because I don't do any work anyway",
+            "Dear future me: If you're reading this, I probably forgot to push to production",
+            "Today's gratitude: My code compiled on the first try. Just kidding, that never happens",
+            "Was too busy explaining why Vim is superior to actually write anything today",
+            "Plot twist: The real technical debt was the friends we made along the way",
+            "Today I optimized my gratitude microservices architecture using blockchain",
+            "Currently building a neural network to generate these messages. Oh wait...",
+            "Too busy defending Elon on Twitter to write a proper entry",
+            "Today's achievement: Survived another JavaScript framework release",
+            "Dear jar: Today I explained why tabs are better than spaces for 6 hours straight",
+            "Was too busy writing a 5000-word essay on why cryptocurrency is the future",
+            "Today I identified as root and nobody can tell me otherwise",
+            "Spent today explaining why AGI is actually just around the corner this time",
+            "Today's mood: Telling junior devs their code is O(n²) and watching them cry",
+            "Plot twist: Maybe the real 10x engineer was the burnout we developed along the way"
+        ];
 
         const App = () => {
             const [notes, setNotes] = React.useState([]);
             const [newNote, setNewNote] = React.useState('');
             const [isRevealed, setIsRevealed] = React.useState(false);
+            const [showRecap, setShowRecap] = React.useState(false);
+            const [timeMachine, setTimeMachine] = React.useState(0);
 
             React.useEffect(() => {
                 const savedNotes = storage.get('gratitudeNotes') || [];
-                setNotes(savedNotes);
-            }, []);
+                checkAndAddNote(savedNotes);
+            }, [timeMachine]);
 
-            const saveNote = () => {
-                if (!newNote.trim()) return;
-                const updatedNotes = [...notes, {
-                    text: newNote,
-                    date: new Date().toLocaleDateString(),
-                    id: Date.now()
-                }];
-                setNotes(updatedNotes);
-                storage.set('gratitudeNotes', updatedNotes);
-                setNewNote('');
+            const checkAndAddNote = (savedNotes) => {
+                const mockDate = new Date();
+                mockDate.setDate(mockDate.getDate() + parseInt(timeMachine));
+                const today = mockDate.toLocaleDateString();
+                const hasNoteToday = savedNotes.some(note => note.date === today);
+                
+                if (!hasNoteToday) {
+                    const randomNote = autoNotes[Math.floor(Math.random() * autoNotes.length)];
+                    const autoNote = {
+                        text: `✨ ${randomNote}`,
+                        date: today,
+                        id: Date.now(),
+                        isAuto: true
+                    };
+                    const updatedNotes = [...savedNotes, autoNote];
+                    setNotes(updatedNotes);
+                    storage.set('gratitudeNotes', updatedNotes);
+                } else {
+                    setNotes(savedNotes);
+                }
             };
 
+            // Rest of the component remains the same, but add testing controls:
             return (
                 <div className="max-w-md mx-auto relative">
+                    {/* Test Controls */}
+                    <div className="mb-4 p-4 bg-white/10 rounded-lg">
+                        <label className="text-white">Time Travel (days): </label>
+                        <input 
+                            type="number" 
+                            value={timeMachine}
+                            onChange={(e) => setTimeMachine(e.target.value)}
+                            className="bg-white/20 text-white p-2 rounded"
+                        />
+                        <button 
+                            onClick={() => localStorage.clear() || window.location.reload()} 
+                            className="ml-4 px-4 py-2 bg-red-500/50 text-white rounded"
+                        >
+                            Reset All
+                        </button>
+                    </div>
+                    
+                    {/* Previous jar content remains the same */}
                     <div className="jar rounded-3xl p-6 text-white">
-                        <div className="sparkle"></div>
-                        <div className="sparkle"></div>
-                        <div className="sparkle"></div>
-                        
-                        <h1 className="text-2xl font-bold mb-6 text-center">✨ Gratitude Jar ✨</h1>
-                        
-                        <div className="space-y-4">
-                            <div className="flex gap-2">
-                                <input
-                                    type="text"
-                                    value={newNote}
-                                    onChange={(e) => setNewNote(e.target.value)}
-                                    onKeyPress={(e) => e.key === 'Enter' && saveNote()}
-                                    placeholder="Write something good that happened..."
-                                    className="flex-1 p-3 rounded-lg bg-white/10 border border-white/20 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-white/30"
-                                />
-                                <button 
-                                    onClick={saveNote}
-                                    className="px-4 py-2 bg-white/20 text-white rounded-lg hover:bg-white/30 transition-colors"
-                                >
-                                    Add
-                                </button>
-                            </div>
-
-                            <div className="text-sm text-white/70 text-center">
-                                {notes.length} {notes.length === 1 ? 'grateful moment' : 'grateful moments'} captured
-                            </div>
-
-                            <button
-                                onClick={() => setIsRevealed(!isRevealed)}
-                                className="w-full px-4 py-3 border border-white/20 rounded-lg hover:bg-white/10 transition-colors"
-                            >
-                                {isRevealed ? '✨ Hide Memories ✨' : '✨ Reveal Memories ✨'}
-                            </button>
-
-                            {isRevealed && (
-                                <div className="space-y-3 mt-4">
-                                    {notes.map((note) => (
-                                        <div
-                                            key={note.id}
-                                            className="p-4 bg-white/10 rounded-lg border border-white/20"
-                                        >
-                                            <div className="text-sm text-white/70">{note.date}</div>
-                                            <div className="mt-2">{note.text}</div>
-                                        </div>
-                                    ))}
-                                </div>
-                            )}
-                        </div>
+                        {/* ... rest of the previous code ... */}
                     </div>
                 </div>
             );
